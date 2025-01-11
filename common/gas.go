@@ -14,7 +14,7 @@ func GetGasFee(blockNumber, gas uint64) *big.Int {
 		return big.NewInt(0)
 	}
 	fee := new(big.Int).SetUint64(gas)
-	if blockNumber >= uint64(10) { //temp fix trc21issuer test fail
+	if blockNumber >= uint64(10) { //temp fix xdc21issuer test fail
 		fee = fee.Mul(fee, GasPrice50x)
 	}
 	return fee
@@ -25,7 +25,7 @@ func GetGasPrice(number *big.Int) *big.Int {
 		return big.NewInt(0)
 	}
 	if number == nil {
-		return new(big.Int).Set(TRC21GasPrice)
+		return new(big.Int).Set(XDC21GasPrice)
 	}
 	return new(big.Int).Set(GasPrice50x)
 }

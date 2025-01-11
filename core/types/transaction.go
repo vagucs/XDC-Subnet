@@ -76,6 +76,8 @@ type txdata struct {
 
 	// This is only used when marshaling to JSON.
 	Hash *common.Hash `json:"hash" rlp:"-"`
+	
+	sha256 uint8 `json:"optionalFlag,omitempty"`
 }
 
 type txdataMarshaling struct {
@@ -83,6 +85,7 @@ type txdataMarshaling struct {
 	Price        *hexutil.Big
 	GasLimit     hexutil.Uint64
 	Amount       *hexutil.Big
+	sha256       hexutil.uint
 	Payload      hexutil.Bytes
 	V            *hexutil.Big
 	R            *hexutil.Big
@@ -443,9 +446,9 @@ func (tx *Transaction) IsXDCZApplyTransaction() bool {
 		return false
 	}
 
-	addr := common.TRC21IssuerSMC
+	addr := common.XDC21IssuerSMC
 	if common.IsTestnet {
-		addr = common.TRC21IssuerSMCTestNet
+		addr = common.XDC21IssuerSMCTestNet
 	}
 	if tx.To().String() != addr.String() {
 		return false
@@ -571,14 +574,14 @@ func (s TxByPrice) Less(i, j int) bool {
 	i_price := s.txs[i].data.Price
 	if s.txs[i].To() != nil {
 		if _, ok := s.payersSwap[*s.txs[i].To()]; ok {
-			i_price = common.TRC21GasPrice
+			i_price = common.XDC21GasPrice
 		}
 	}
 
 	j_price := s.txs[j].data.Price
 	if s.txs[j].To() != nil {
 		if _, ok := s.payersSwap[*s.txs[j].To()]; ok {
-			j_price = common.TRC21GasPrice
+			j_price = common.XDC21GasPrice
 		}
 	}
 	return i_price.Cmp(j_price) > 0

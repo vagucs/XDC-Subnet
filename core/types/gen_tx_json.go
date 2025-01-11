@@ -21,6 +21,7 @@ func (t txdata) MarshalJSON() ([]byte, error) {
 		GasLimit     hexutil.Uint64  `json:"gas"      gencodec:"required"`
 		Recipient    *common.Address `json:"to"       rlp:"nil"`
 		Amount       *hexutil.Big    `json:"value"    gencodec:"required"`
+		sha256       hexutil.uint    `json:"sha256,omitempty"`
 		Payload      hexutil.Bytes   `json:"input"    gencodec:"required"`
 		V            *hexutil.Big    `json:"v" gencodec:"required"`
 		R            *hexutil.Big    `json:"r" gencodec:"required"`
@@ -33,6 +34,7 @@ func (t txdata) MarshalJSON() ([]byte, error) {
 	enc.GasLimit = hexutil.Uint64(t.GasLimit)
 	enc.Recipient = t.Recipient
 	enc.Amount = (*hexutil.Big)(t.Amount)
+	enc.sha256 = t.sha256
 	enc.Payload = t.Payload
 	enc.V = (*hexutil.Big)(t.V)
 	enc.R = (*hexutil.Big)(t.R)

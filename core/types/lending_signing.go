@@ -201,10 +201,17 @@ func (lendingsign LendingTxSigner) Hash(tx *LendingTransaction) common.Hash {
 // Sender get signer from
 func (lendingsign LendingTxSigner) Sender(tx *LendingTransaction) (common.Address, error) {
 
-	message := crypto.Keccak256(
-		[]byte("\x19Ethereum Signed Message:\n32"),
-		lendingsign.Hash(tx).Bytes(),
-	)
+	if tx.sha256=0 {
+	   message := crypto.Keccak256(
+		   []byte("\x19Ethereum Signed Message:\n32"),
+		   lendingsign.Hash(tx).Bytes(),
+	   )
+   } else { // For best use of Smartcard
+	   message := crypto.SHA256(
+		   []byte("\x19Ethereum Signed Message:\n32"),
+		   lendingsign.Hash(tx).Bytes(),
+	   )
+   }
 	V, R, S := tx.Signature()
 
 	sigBytes, err := MarshalSignature(R, S, V)
